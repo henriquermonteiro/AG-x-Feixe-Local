@@ -31,14 +31,18 @@ public class Solucao {
         int count = 0;
         byte buffer = 0;
         
+        while(descriptor.length() != desc.length * 8){
+            descriptor = descriptor.concat("0");
+        }
+        
         for(char c : descriptor.toCharArray()){
             switch(c){
                 case '1':
-                    buffer = (byte) (buffer >> 1);
-                    buffer = (byte) (buffer | 0x10000000);
+                    buffer = (byte) (buffer << 1);
+                    buffer = (byte) (buffer + 0x1);
                     break;
                 case '0':
-                    buffer = (byte) (buffer >> 1);
+                    buffer = (byte) (buffer << 1);
 //                    buffer = (byte) (buffer | 0x00000000);
                     break;
                 default:
@@ -63,7 +67,15 @@ public class Solucao {
         Solucao[] sucessores = new Solucao[ProblemConstants.DESCRIPTION_LENGHT.intValue()];
         
         for(int k = 0; k < ProblemConstants.DESCRIPTION_LENGHT; k++){
+            char[] desc = toString().toCharArray();
             
+            if(desc[k] == '0'){
+                desc[k] = '1';
+            }else{
+                desc[k] = '0';
+            }
+            
+            sucessores[k] = new Solucao(new String(desc));
         }
         
         return sucessores;
@@ -78,11 +90,12 @@ public class Solucao {
         Double peso_cap = 0.0;
         
         for(ObjetosMochila obj : ObjetosMochila.getList()){
-            if(buffer << 1 == 0x00000001){
+            if(buffer < 0){
                 fitness += obj.getValor();
                 peso_cap += obj.getPeso();
             }
             
+            buffer = (byte) (buffer << 1);
             count++;
             
             if(count > 7){
@@ -93,8 +106,13 @@ public class Solucao {
         }
         
         if(peso_cap > ProblemConstants.CAP){
-            fitness /= 2;
+            fitness /= 10;
             fitness /= (peso_cap / ProblemConstants.CAP);
+            
+        }
+        
+        if(fitness > 54){
+            System.out.print("");
         }
         
         return fitness;
@@ -109,7 +127,7 @@ public class Solucao {
         String desc = "";
         
         for(int k = 0; k < ProblemConstants.DESCRIPTION_LENGHT; k++){
-            if(buffer << 1 == 0x00000001){
+            if(buffer < 0){
                 desc = desc.concat("1");
             }else{
                 desc = desc.concat("0");
@@ -126,7 +144,7 @@ public class Solucao {
         }
         
         
-        return super.toString(); //To change body of generated methods, choose Tools | Templates.
+        return desc;
     }
     
     

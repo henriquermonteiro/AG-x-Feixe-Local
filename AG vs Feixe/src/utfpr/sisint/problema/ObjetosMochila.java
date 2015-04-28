@@ -6,7 +6,7 @@
 package utfpr.sisint.problema;
 
 /**
- *
+ * Feixe MAX = 55;
  * @author henrique
  */
 public enum ObjetosMochila {
