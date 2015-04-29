@@ -52,7 +52,7 @@ public class BuscaFeixeLocal {
 
         int k = 1;
 
-        while (k < 10000) {
+        while (k < 500) {
             for (Solucao s : topSolutions) {
                 pool.add(s);
                 pool.addAll(Arrays.asList(s.getSucessores()));
@@ -85,11 +85,25 @@ public class BuscaFeixeLocal {
             k++;
         }
 
-        return "";
+        return topSolutions.get(0).getFitness().toString();
     }
 
     public static void main(String... args) {
         BuscaFeixeLocal busca = new BuscaFeixeLocal();
-        System.out.println(busca.doSearch());
+        
+        StringBuilder stringB = new StringBuilder();
+        
+        Boolean compare_mode = true;
+        
+        if (compare_mode) {
+            for(int k = 0; k < 250; k++){
+                stringB.append(k).append(";").append(busca.doSearch()).append(";\n");
+            }
+        }else{
+            busca.doSearch();
+        }
+        
+        System.out.println("-------------------------------");
+        System.out.println(stringB);
     }
 }

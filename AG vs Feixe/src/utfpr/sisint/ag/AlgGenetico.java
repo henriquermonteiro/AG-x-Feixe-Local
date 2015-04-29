@@ -22,7 +22,7 @@ public class AlgGenetico {
     public AlgGenetico() {
     }
 
-    public void doSearch() {
+    public String doSearch() {
         ArrayList<Solucao> topSolutions = new ArrayList<>();
         ArrayList<Solucao> pool = new ArrayList<>();
 
@@ -46,7 +46,7 @@ public class AlgGenetico {
 
                 topSolutions.add(new Solucao(ax));
             }
-        }else{
+        } else {
             throw new UnsupportedOperationException();
         }
 
@@ -58,7 +58,7 @@ public class AlgGenetico {
 
         int k = 1;
 
-        while (k < 10000) {
+        while (k < 1000) {
             Double fitnessTotal = 0.0;
 
             fitnessTotal = topSolutions.stream().map((s) -> s.getFitness()).reduce(fitnessTotal, (accumulator, _item) -> accumulator + _item);
@@ -139,11 +139,26 @@ public class AlgGenetico {
             System.out.println("");
             k++;
         }
+
+        return topSolutions.get(0).getFitness().toString();
     }
 
     public static void main(String... args) {
         AlgGenetico alg = new AlgGenetico();
 
-        alg.doSearch();
+        StringBuilder stringB = new StringBuilder();
+        
+        Boolean compare_mode = true;
+        
+        if (compare_mode) {
+            for(int k = 0; k < 250; k++){
+                stringB.append(k).append(";").append(alg.doSearch()).append(";\n");
+            }
+        }else{
+            alg.doSearch();
+        }
+        
+        System.out.println("-------------------------------");
+        System.out.println(stringB);
     }
 }

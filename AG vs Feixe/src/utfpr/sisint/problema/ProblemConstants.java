@@ -13,9 +13,9 @@ public class ProblemConstants {
     public static final Double CAP = 28.0;
     public static final Double DESCRIPTION_LENGHT = 28.0;
     
-    public static final Double MUTATION_CHANCE = 0.4;
+    public static final Double MUTATION_CHANCE = 0.3;
     public static final Double CROSSOVER_CHANCE = 0.8;
-    public static final int MATTING_COUNT = 30;
+    public static final int MATTING_COUNT = 63;
     
     public static final int SCENARIO_ID = -1;
 }
