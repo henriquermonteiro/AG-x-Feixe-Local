@@ -3,10 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package utfpr.sisint.fl;
-
-import utfpr.sisint.problema.ObjetosMochila;
-import utfpr.sisint.problema.ProblemConstants;
+package utfpr.sisint.problema;
 
 /**
  *
@@ -111,10 +108,6 @@ public class Solucao {
             
         }
         
-        if(fitness > 54){
-            System.out.print("");
-        }
-        
         return fitness;
     }
 
@@ -147,5 +140,46 @@ public class Solucao {
         return desc;
     }
     
+    public Solucao mutatePosition(Integer position){
+        String desc = toString();
+        
+        char[] description = desc.toCharArray();
+        
+        if(position >= 0 && position < ProblemConstants.DESCRIPTION_LENGHT){
+            if(description[position] == '0'){
+                description[position] = '1';
+            }else{
+                description[position] = '0';
+            }
+            
+            return new Solucao(new String(description));
+        }
+        
+        throw new IllegalArgumentException("A posição informada não é válida.");
+    }
     
+    public Solucao[] crossover(Solucao mate, Integer position){
+        Solucao[] solutions = new Solucao[2];
+        
+        if(position < 0 && position >= ProblemConstants.DESCRIPTION_LENGHT){
+            throw new IllegalArgumentException("A posição informada não é válida.");
+        }
+        
+        if(mate == null){
+            throw new NullPointerException("O parâmetro 'mate' não pode ser nulo.");
+        }
+        
+        String desc1 = toString();
+        String desc2 = mate.toString();
+        
+        String desc1_pt1 = desc1.substring(0, position);
+        String desc1_pt2 = desc1.substring(position, desc1.length());
+        String desc2_pt1 = desc2.substring(0, position);
+        String desc2_pt2 = desc2.substring(position, desc2.length());
+        
+        solutions[0] = new Solucao(desc1_pt1.concat(desc2_pt2));
+        solutions[1] = new Solucao(desc2_pt1.concat(desc1_pt2));
+        
+        return solutions;
+    }
 }

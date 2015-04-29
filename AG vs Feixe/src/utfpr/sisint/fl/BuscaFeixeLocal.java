@@ -5,6 +5,7 @@
  */
 package utfpr.sisint.fl;
 
+import utfpr.sisint.problema.Solucao;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -25,29 +26,33 @@ public class BuscaFeixeLocal {
         ArrayList<Solucao> topSolutions = new ArrayList<>();
         ArrayList<Solucao> pool = new ArrayList<>();
 
-        ArrayList<String> initialSolutions = new ArrayList<>();
-        for (int u = 0; u < TOP_SIZE; u++) {
-            String ax = "";
+        if (ProblemConstants.SCENARIO_ID == -1) {
+            ArrayList<String> initialSolutions = new ArrayList<>();
+            for (int u = 0; u < TOP_SIZE; u++) {
+                String ax = "";
 
-            while (true) {
-                for (int y = 0; y < ProblemConstants.DESCRIPTION_LENGHT; y++) {
-                    Integer randomInt = ((Double) (Math.ceil(Math.random() * 2) - 1)).intValue();
+                while (true) {
+                    for (int y = 0; y < ProblemConstants.DESCRIPTION_LENGHT; y++) {
+                        Integer randomInt = ((Double) (Math.ceil(Math.random() * 2) - 1)).intValue();
 
-                    ax = ax.concat(randomInt.toString());
+                        ax = ax.concat(randomInt.toString());
+                    }
+
+                    if (!initialSolutions.contains(ax)) {
+                        initialSolutions.add(ax);
+                        break;
+                    }
                 }
 
-                if (!initialSolutions.contains(ax)) {
-                    initialSolutions.add(ax);
-                    break;
-                }
+                topSolutions.add(new Solucao(ax));
             }
-            
-            topSolutions.add(new Solucao(ax));
+        } else {
+            throw new UnsupportedOperationException();
         }
 
         int k = 1;
 
-        while (k < 100) {
+        while (k < 10000) {
             for (Solucao s : topSolutions) {
                 pool.add(s);
                 pool.addAll(Arrays.asList(s.getSucessores()));
